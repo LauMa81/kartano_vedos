@@ -69,7 +69,7 @@ header .nav-links li a {
 }
 
 /* Responsiivinen valikko pienemmille näytöille */
-@media (max-width: 768px) {
+@media (max-width: 920px) {
   header .menu-toggle {
     display: block;
   }
@@ -136,6 +136,7 @@ p span {
       transform: translateY(0);
       text-align: center;
     }
+
     .hero {
       position: relative;
       height: 100vh;
@@ -174,6 +175,86 @@ p span {
       text-shadow: 0 0 5px rgba(0,0,0,0.5);
     }
 
+/* Avautuva tekstiruutu */
+    /* Modaalin tausta */
+      .modal {
+        display: none; /* Piilotetaan oletuksena */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Läpinäkyvä musta tausta */
+      }
+
+    /* Modaalin sisältö */
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .modal-content ul {
+        list-style: none; /* Poistaa mustat pallot */
+        padding: 0; /* Poistaa ylimääräiset sisennykset */
+        margin-top: 20px; /* Lisää tilaa listan yläpuolelle */
+      }
+
+      .modal-content ul li {
+        margin-bottom: 10px; /* Lisää tilaa rivien väliin */
+      }
+
+      /* Sulkupainike */
+      .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: black;
+        text-decoration: none;
+      }
+
+      .read-more-button {
+      display: inline-block;
+      background: linear-gradient(145deg, #48aa21, #0056b3); /* Gradientti taustaväri */
+      color: white;
+      text-decoration: none;
+      padding: 12px 25px;
+      border-radius: 8px; /* Pyöristetyt kulmat */
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px; /* Siirtää painiketta alemmas tekstistä */
+      transition: all 0.3s ease;
+      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.1); /* Syvyysefekti */
+      cursor: pointer;
+    }
+
+    .read-more-button:hover {
+      background: linear-gradient(145deg, #48aa21, #007bff); /* Vaihtaa gradientin suuntaa hover-tilassa */
+      box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.2); /* Syvempi varjo hover-tilassa */
+      transform: translateY(-3px); /* Nostaa painiketta hieman */
+    }
+
+    .read-more-button:active {
+      background: linear-gradient(145deg, #48aa21, #0056b3); /* Tummempi gradientti aktiivisessa tilassa */
+      box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.3), inset -4px -4px 8px rgba(255, 255, 255, 0.1); /* Sisäinen varjo painettaessa */
+      transform: translateY(1px); /* Painike painuu hieman alas */
+    }
+
+    /* Soita meille -painike */
     .call-button {
       display: inline-block;
       background-color: #48aa21;
@@ -271,11 +352,27 @@ p span {
   </section>
 
 
+
   <section id="ajankohtaista">
     <img src="Kuvat/kartano_logo_harjoitus.png" alt="järvikylän kartano maatalous" style="width: 200px; height: auto; margin-bottom: 20px;">
     <h2>Ajankohtaiset tapahtumat ja tiedotteet</h2>
     <p>Pysy ajan tasalla maa- ja metsätalouden tapahtumista – tilaisuuksia, jotka yhdistävät ihmiset ja ideat.</p>
+    <button class="read-more-button">Lue lisää</button>
   </section>
+
+    <!-- Modaalinen ikkuna -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Ajankohtaiset tiedotteet ja tapahtumat</h2>
+    <p>Tässä on lista ajankohtaisista tapahtumista ja tiedotteista 2025:</p>
+    <ul>
+      <li>Kevätkylvöt ovat alkaneet!</li>
+      <li>Tilaisuus 2: Päivämäärä ja aika</li>
+      <li>Tilaisuus 3: Päivämäärä ja aika</li>
+    </ul>
+  </div>
+</div>
 
   <section id="historia">
     <img src="Kuvat/kartano_logo_harjoitus.png" alt="järvikylän kartano maatalous" style="width: 100px; height: auto; margin-bottom: 20px;">
@@ -389,6 +486,28 @@ navLinkItems.forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('active');
   });
+});
+
+// Valitaan modaalin elementit
+const modal = document.getElementById('modal');
+const readMoreButton = document.querySelector('.read-more-button');
+const closeButton = document.querySelector('.close-button');
+
+// Näytetään modaali, kun "Lue lisää" -painiketta klikataan
+readMoreButton.addEventListener('click', () => {
+  modal.style.display = 'block';
+});
+
+// Piilotetaan modaali, kun sulkupainiketta klikataan
+closeButton.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+// Piilotetaan modaali, kun käyttäjä klikkaa modaalin ulkopuolelle
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
 });
   </script>
 </body>
